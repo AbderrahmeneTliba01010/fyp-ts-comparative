@@ -1,0 +1,17 @@
+# Method registry for the paper's "Methods compared" table. `deviation` is copied verbatim into the paper.
+informer:     {paper: "Zhou et al., AAAI 2021",        family: pre-llm,   regime: supervised, impl: neuralforecast.Informer,   deviation: "CI-univariate; no calendar covariates; L1 loss"}
+autoformer:   {paper: "Wu et al., NeurIPS 2021",        family: pre-llm,   regime: supervised, impl: neuralforecast.Autoformer, deviation: "same"}
+fedformer:    {paper: "Zhou et al., ICML 2022",         family: pre-llm,   regime: supervised, impl: neuralforecast.FEDformer,  deviation: "same"}
+patchtst:     {paper: "Nie et al., ICLR 2023",          family: pre-llm,   regime: supervised, impl: neuralforecast.PatchTST,   deviation: "default NF hyper-parameters, lookback 512"}
+llmtime:      {paper: "Gruver et al., NeurIPS 2023",    family: llm-reuse, regime: zero-shot,  impl: tscompare LLMTime codec,   deviation: "open LM (Qwen2.5-1.5B) instead of GPT-3/LLaMA-2; short horizons only"}
+gpt4ts:       {paper: "Zhou et al., NeurIPS 2023 (OFA)",family: llm-reuse, regime: supervised, impl: tscompare.patch_llm,      deviation: "GPT-2 6 layers; re-implemented compactly; L1 loss; step cap"}
+time_llm:     {paper: "Jin et al., ICLR 2024",          family: llm-reuse, regime: supervised, impl: tscompare.patch_llm,      deviation: "GPT-2 backbone instead of LLaMA-7B; fixed-length prompt (128 tok)"}
+chronos_t5_small: {paper: "Ansari et al., TMLR 2024",   family: native-tsfm, regime: zero-shot, impl: chronos-forecasting,      deviation: "20 samples; context 512"}
+timesfm:      {paper: "Das et al., ICML 2024",          family: native-tsfm, regime: zero-shot, impl: timesfm 2.5 (200M),       deviation: "v2.5 checkpoint (deck describes the v1 design; same decoder-only patch family)"}
+moirai:       {paper: "Woo et al., ICML 2024",          family: native-tsfm, regime: zero-shot, impl: uni2ts 1.1-R-base,        deviation: "univariate; 100 samples"}
+moment_zs:    {paper: "Goswami et al., ICML 2024",      family: native-tsfm, regime: zero-shot, impl: momentfm (mask-forecast), deviation: "H<=256; point only; reconstruction-style forecast"}
+sundial:      {paper: "Liu et al., ICML 2025",          family: native-tsfm, regime: zero-shot, impl: thuml/sundial-base-128m,  deviation: "20 generated samples"}
+tan_wo_llm:   {paper: "Tan et al., NeurIPS 2024",       family: critical,  regime: supervised, impl: tscompare.patch_llm,      deviation: "ablation: LLM removed"}
+tan_llm2attn: {paper: "Tan et al., NeurIPS 2024",       family: critical,  regime: supervised, impl: tscompare.patch_llm,      deviation: "ablation: LLM -> 1 attention layer"}
+tan_llm2trsf: {paper: "Tan et al., NeurIPS 2024",       family: critical,  regime: supervised, impl: tscompare.patch_llm,      deviation: "ablation: LLM -> 1 transformer layer"}
+gpt2_scratch: {paper: "this work (control)",            family: critical,  regime: supervised, impl: tscompare.patch_llm,      deviation: "GPT4TS recipe with random (not pretrained) GPT-2"}

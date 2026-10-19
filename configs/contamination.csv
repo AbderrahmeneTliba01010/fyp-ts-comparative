@@ -1,0 +1,7 @@
+model,pretraining_corpus,data_cutoff,source,dataset_overlap_with_TIME,notes
+chronos_t5_small,"Chronos training corpus + KernelSynth",2023-late,Ansari et al. 2024,TODO,fill after checking dataset sources in TIME paper appendix
+timesfm,"Google Trends, Wiki pageviews, synthetic, + public (M4, electricity, traffic ...)",TODO,Das et al. 2024 / model card,TODO,
+moirai,"LOTSA (27B observations)",2024-early,Woo et al. 2024,TODO,
+moment_zs,"Time-series Pile",2024-early,Goswami et al. 2024,TODO,
+sundial,"TimeBench (~1T points)",2025-early,Liu et al. 2025,TODO,
+llmtime,"Web-scale text (LM-dependent)",LM-dependent,Gruver et al. 2023,TODO,"cannot be audited at series level"

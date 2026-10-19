@@ -1,0 +1,16 @@
+# Model stacks conflict with each other (torch / transformers pins). RECOMMENDED: one conda env per stack,
+# all writing to the same ./results folder (scripts/run_model.py is a separate process per model).
+# Pin exact versions here once check_models.py passes, and cite them in the paper's reproducibility appendix.
+
+# --- stack A: supervised (informer, autoformer, fedformer, patchtst, gpt4ts, time_llm, tan_*, gpt2_scratch) + chronos + sundial + llmtime
+torch
+transformers
+accelerate
+neuralforecast
+chronos-forecasting
+huggingface_hub
+
+# --- stack B: timesfm 2.5     ->  pip install git+https://github.com/google-research/timesfm.git   (see its README for the extras)
+# --- stack C: moirai          ->  pip install uni2ts  (or git+https://github.com/SalesforceAIResearch/uni2ts.git) ; needs gluonts
+# --- stack D: moment          ->  pip install momentfm
+# --- TIME benchmark code      ->  git clone https://github.com/zqiao11/TIME && pip install -e TIME

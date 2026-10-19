@@ -1,0 +1,56 @@
+\documentclass[11pt]{article}
+\usepackage[margin=2.3cm]{geometry}
+\usepackage{booktabs,graphicx,amsmath,amssymb,xcolor,hyperref,caption,array}
+\usepackage[numbers,sort&compress]{natbib}
+\newcommand{\todo}[1]{{\color{red}[TODO: #1]}}
+\newcommand{\IfExists}[2]{\IfFileExists{#1}{#2}{\todo{missing #1 -- run notebook 03}}}
+\title{How Far Do LLM-Era Forecasters Really Go?\\A Controlled Comparison on Fresh Benchmarks}
+\author{Abderrahmene Tliba \quad \todo{co-authors / supervisor}\\ ENSIA -- National Higher School of Artificial Intelligence}
+\date{\today}
+\begin{document}\maketitle
+\begin{abstract}
+\todo{5 sentences: motivation (claims of LLM/foundation models for TS vs critical evidence) $\rightarrow$ what we do (one protocol, N methods, leakage-controlled TIME tasks, two regimes) $\rightarrow$ 2--3 headline findings with numbers from Table~\ref{tab:main} $\rightarrow$ what it implies for the next generation of methods.}
+\end{abstract}
+
+\section{Introduction}
+Time-series forecasting has moved from task-specific Transformers \citep{zhou2021informer,wu2021autoformer,zhou2022fedformer,nie2023patchtst}, to reusing language models \citep{gruver2023llmtime,zhou2023gpt4ts,jin2024timellm}, to natively pretrained foundation models \citep{ansari2024chronos,das2024timesfm,woo2024moirai,goswami2024moment,liu2025sundial}. Claims across these families are rarely comparable: different datasets, windows, context lengths, metrics, and unknown pretraining overlap. Meanwhile, simple ablations question the value of language-model weights \citep{tan2024language}.
+\paragraph{Contributions.} \todo{(1) a single reproducible protocol covering all families; (2) evaluation of $N$ methods on $M$ leakage-controlled tasks; (3) answers to RQ1--RQ5 below; (4) released harness.}
+
+\paragraph{Research questions.}
+\textbf{RQ1} which family wins, and in which regimes? \textbf{RQ2} do pretrained LLM weights help? \textbf{RQ3} what does accuracy cost? \textbf{RQ4} where do methods fail (sharp local dynamics)? \textbf{RQ5} how stable are rankings w.r.t.\ context length and contamination?
+
+\section{Related Work}
+\todo{Three short paragraphs: model families (mirror the literature-review deck: architecture/efficiency $\rightarrow$ LLM-reuse $\rightarrow$ native TSFMs); critical studies \citep{tan2024language}; benchmarks \citep{aksu2024gifteval,shchur2025fevbench,qiao2026time} and why leakage control matters.}
+
+\section{Benchmark and Protocol}
+\paragraph{Data.} Primary: TIME \citep{qiao2026time}; robustness: fev-bench \citep{shchur2025fevbench} and the leakage-free subset of GIFT-Eval \citep{aksu2024gifteval}. Core subset of \todo{N} tasks, stratified by domain and horizon term (Table~\ref{tab:datasets}).
+\paragraph{Regimes.} Zero-shot (context only) vs.\ supervised (trained per task on the training split with an identical budget); both scored on identical test windows.
+\paragraph{Metrics and aggregation.} MASE (headline), WQL for probabilistic models; geometric-mean relative error w.r.t.\ seasonal naive with bootstrap CIs, average rank, win rate, Friedman--Nemenyi \citep{shchur2025fevbench}. \todo{one paragraph on contamination ledger.}
+\paragraph{Fairness rules and deviations.} \todo{condense docs/PROTOCOL.md: common context cap 512, median point forecast, L1 loss, no per-dataset tuning, seeds; list deviations from original implementations.}
+
+\begin{table}[t]\centering\small\caption{Benchmark tasks.}\label{tab:datasets}
+\IfExists{tables/datasets.tex}{\input{tables/datasets.tex}}\end{table}
+
+\section{Methods Compared}
+\todo{Table from configs/models.yaml: method, family, regime, checkpoint/implementation, parameters, deviation.}
+
+\section{Results}
+\begin{table}[t]\centering\small
+\IfExists{tables/main.tex}{\input{tables/main.tex}}\end{table}
+\begin{figure}[t]\centering\IfFileExists{figures/main_bar.pdf}{\includegraphics[width=.8\linewidth]{figures/main_bar.pdf}}{\todo{figure}}\caption{Geometric-mean relative MASE (lower is better).}\end{figure}
+\begin{figure}[t]\centering\IfFileExists{figures/cd.pdf}{\includegraphics[width=.9\linewidth]{figures/cd.pdf}}{\todo{figure}}\caption{Critical-difference diagram (Nemenyi, $\alpha=0.05$).}\end{figure}
+
+\section{Analysis}
+\subsection{RQ1: families and regimes} \todo{by term / frequency / domain (figures/by\_*.pdf).}
+\subsection{RQ2: do LLM weights help?} \todo{GPT4TS, Time-LLM vs.\ w/o LLM, LLM$\rightarrow$Attn, LLM$\rightarrow$Trsf, random GPT-2.}
+\subsection{RQ3: accuracy vs.\ cost} \todo{figures/pareto.pdf.}
+\subsection{RQ4: sharp local dynamics} \todo{high- vs low-curvature error ratio; patch-size sweep.}
+\subsection{RQ5: robustness} \todo{context length; with/without flagged pairs.}
+
+\section{Discussion and Limitations}
+\todo{what the evidence says about tokenisation granularity and frozen-LLM bottlenecks; subsampling, budgets, GPT-2 vs.\ LLaMA-7B, incomplete contamination audit.}
+
+\section{Conclusion} \todo{3--4 sentences + pointer to our method.}
+
+\bibliographystyle{plainnat}\bibliography{refs}
+\end{document}

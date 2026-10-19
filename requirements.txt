@@ -1,0 +1,10 @@
+numpy
+pandas
+scipy
+matplotlib
+seaborn
+pyyaml
+tabulate
+tqdm
+jupyter
+pytest

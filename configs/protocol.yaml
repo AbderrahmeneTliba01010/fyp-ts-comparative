@@ -1,0 +1,34 @@
+# Single source of truth for the experimental protocol (cited in the paper, Section "Protocol").
+benchmark:
+  primary: TIME            # Qiao et al., ICML 2026 -- fresh, leakage-controlled datasets
+  secondary: [fev-bench, GIFT-Eval]   # optional robustness checks (cross-benchmark agreement)
+  storage_path: ${TIME_STORAGE}       # export TIME_STORAGE=/path/to/TIME-dataset (HF: Real-TSF/TIME)
+  to_univariate: true                 # channel-independent for every model
+context_length: 512                   # common cap for the MAIN table (sensitivity: 96/336/2048 in notebook 04)
+data_caps:                            # identical for every model (instances are subsampled with a fixed seed)
+  max_instances_per_task: 500
+  max_train_series: 300
+  max_context_store: 4096
+  seed: 0
+metrics:
+  headline: mase                      # point forecast = median; scale = in-sample seasonal naive MAE (full context)
+  secondary: [wql, nmae, nmse]        # wql only for probabilistic models
+  reference_model: seasonal_naive     # all "relative" scores are divided by this model's per-task score
+aggregation: {score: geometric_mean_relative, ci: bootstrap_over_tasks_95, rank: friedman_nemenyi, missing: impute_seasonal_naive}
+supervised_budget:                    # same for every trained model; one model trained from scratch PER TASK
+  max_steps: 1500
+  eval_every: 100
+  patience: 4
+  loss: l1_on_instance_normalised
+  seeds: [0, 1, 2]                    # report mean over seeds in the final run; seed 0 only while debugging
+tiers:
+  smoke: {tasks: synthetic, models: [seasonal_naive, naive]}
+  core:  {tasks: configs/tasks_core.yaml, models: all}
+  full:  {tasks: all_TIME_tasks, models: [zero-shot only]}
+per_model_overrides:
+  llmtime: {max_instances_per_task: 100, max_horizon: 96, num_samples: 10}   # generation cost grows with H x samples
+  moment_zs: {max_horizon: 256}
+contamination:
+  rule: "flag a (model, dataset) pair if the dataset's source appears in the model's declared pretraining corpus or the
+         test window starts before the model's data cutoff; report main table with and without flagged pairs"
+  ledger: configs/contamination.csv
